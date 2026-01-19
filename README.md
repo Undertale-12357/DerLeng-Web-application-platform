@@ -17,34 +17,42 @@ The main objectives of the Derleng project are:
 3. System Architecture Overview
 
 Derleng follows a three-tier architecture:
+
 Frontend (Client Layer)
  - Developed using React.js
  - Responsible for user interaction, UI rendering, and client-side routing
  - Communicates with the backend via RESTful APIs
+
 Backend (Application Layer)
  - Built with Node.js and Express.js
  - Implements business logic, authentication, authorization, and API endpoints
  - Uses Sequelize ORM for database interaction
+
 Database (Data Layer)
  - PostgreSQL relational database
  - Stores users, places, reviews, packages, bookings, and related entities
+
 A detailed system architecture diagram is available in the docs/architecture/ directory.
 
 4. Technology Stack
+
 Frontend
  - React.js
  - Vite
  - Axios
  - React Router
  - Tailwind CSS / CSS Modules
+
 Backend
  - Node.js
  - Express.js
  - Sequelize ORM
  - JSON Web Token (JWT)
  - bcrypt
+
 Database
  - PostgreSQL
+
 Tools & Documentation
  - Figma (UI/UX Design)
  - Lucidchart (UML Diagrams)
@@ -99,6 +107,7 @@ So far, the project has completed:
 Implementation will proceed incrementally, starting with core authentication and user management.
 
 8. Installation and Setup
+
 Prerequisites
  - Node.js (v18 or later)
  - PostgreSQL
