@@ -52,6 +52,7 @@ Tools & Documentation
  - Git & GitHub (Version Control)
 
 5. Repository Structure
+
 derleng-project/
 ├── docs/                # Project documentation and diagrams
 ├── backend/             # Node.js + Express backend
@@ -69,12 +70,14 @@ User Features
  - Reading and writing reviews
  - Booking travel packages
  - Profile management
+
 Service & Business Features
  - Local guide service packages
  - Accommodation recommendations
  - Travel preparation and item guidance
  - Community-based tourism support
  - Booking management
+
 System Features
  - JWT-based authentication and authorization
  - Role-based access control (Admin, Provider, Visitor)
