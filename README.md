@@ -113,15 +113,15 @@ Prerequisites
  - PostgreSQL
  - Git
 
-Backend Setup
-cd backend
-npm install
-npm run dev
+   Backend Setup
+   cd backend
+   npm install
+   npm run dev
 
-Frontend Setup
-cd frontend
-npm install
-npm run dev
+   Frontend Setup
+   cd frontend
+   npm install
+   npm run dev
 
 Database Setup
  - Create a PostgreSQL database
