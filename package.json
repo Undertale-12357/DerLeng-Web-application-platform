@@ -1,0 +1,34 @@
+{
+  "name": "derleng-web-application-platform",
+  "version": "1.0.0",
+  "description": "Derleng – Tourism Discovery and Travel Assistance Platform\r 1. Project Overview",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Undertale-12357/DerLeng-Web-application-platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Undertale-12357/DerLeng-Web-application-platform/issues"
+  },
+  "homepage": "https://github.com/Undertale-12357/DerLeng-Web-application-platform#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
