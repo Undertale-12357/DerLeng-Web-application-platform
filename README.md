@@ -124,7 +124,7 @@ Prerequisites
    npm run dev
 
 Database Setup
- - Create a PostgreSQL database
+ - Create a Mongoose database
  - Run schema and seed files located in the database/ folder
 
 9. Documentation
