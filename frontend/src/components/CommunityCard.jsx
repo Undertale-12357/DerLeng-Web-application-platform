@@ -33,7 +33,7 @@ const CommunityCard = ({ post, onClick, onFavorite, onLike }) => {
     >
       {/* IMAGE */}
       <div
-        className="relative aspect-[1.1/1] overflow-hidden m-2 rounded-xl"
+        className="relative aspect-[1.1/1] overflow-hidden m-2 rounded-lg"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => {
           setHover(false);
@@ -43,7 +43,7 @@ const CommunityCard = ({ post, onClick, onFavorite, onLike }) => {
         <img
           src={images[index] || "https://via.placeholder.com/600"}
           alt={post.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition duration-500"
         />
 
         {/* BADGE */}
@@ -53,7 +53,7 @@ const CommunityCard = ({ post, onClick, onFavorite, onLike }) => {
 
         {/* IMAGE COUNT */}
         {images.length > 1 && (
-          <div className="absolute top-3 left-3 bg-black/40 text-white text-xs px-2 py-1 rounded-full">
+          <div className="absolute top-4 left-4 bg-black/40 text-white text-xs px-2 py-1 rounded-2xl backdrop-blur">
             {index + 1}/{images.length}
           </div>
         )}
@@ -101,16 +101,10 @@ const CommunityCard = ({ post, onClick, onFavorite, onLike }) => {
             />
             <span className="text-xs font-semibold">{post.likes || 0}</span>
           </button>
-
-          {/* COMMENTS */}
-          <div className="flex items-center gap-1 text-gray-500">
-            <MessageCircle size={16} />
-            <span className="text-xs">{post.comments_count || 0}</span>
-          </div>
-        </div>
+        </div> 
 
         {/* FOOTER */}
-        <div className="flex justify-between border-t pt-2 mt-2 text-xs text-gray-500">
+        <div className="flex justify-between border-t border-gray-200 pt-2 mt-2 text-xs text-gray-500">
           <span>{post.admin_id?.username || "Admin"}</span>
           <span>{creationDay}</span>
         </div>

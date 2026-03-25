@@ -24,7 +24,7 @@ export default function Communities() {
     fetchCommunities(currentPage, itemsPerPage);
   }, [currentPage, itemsPerPage]);
 
-  const fetchCommunities = async (page = 1, limit = 8) => {
+  const fetchCommunities = async (page = 1, limit = 10) => {
     try {
       setLoading(true);
 

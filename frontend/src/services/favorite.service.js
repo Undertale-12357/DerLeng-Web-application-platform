@@ -1,3 +1,4 @@
+//frontend\src\services\favorite.service.js
 import api from "./api";
 
 /* ---------------- TOGGLE FAVORITE ---------------- */

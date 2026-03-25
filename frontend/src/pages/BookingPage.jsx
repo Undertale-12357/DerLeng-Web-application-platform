@@ -130,7 +130,7 @@ export default function BookingPage() {
 
         {/* HEADER */}
         <div className="text-center mb-10">
-          <h1 className="text-2xl font-semibold text-green-900">
+          <h1 className="text-xl font-semibold text-green-900">
             Community Tourism Booking
           </h1>
           <p className="text-gray-500 text-sm">

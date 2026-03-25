@@ -33,7 +33,7 @@ export default function CommunityByProvince() {
       {communities.length === 0 ? (
         <p>No communities found</p>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="p-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {communities.map((post) => (
             <CommunityCard
               key={post._id}

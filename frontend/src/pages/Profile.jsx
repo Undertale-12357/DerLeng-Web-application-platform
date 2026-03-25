@@ -1,3 +1,4 @@
+//frontend\src\pages\Profile.jsx
 import { useState, useContext, useEffect } from "react";
 import { ChevronDown, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";

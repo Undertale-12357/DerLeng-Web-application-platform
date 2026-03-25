@@ -1,10 +1,12 @@
+//frontend\src\pages\DiscoverPage.jsx
 import { useDiscover } from "../hooks/useDiscover";
 import { categoryImages, provinceImages } from "../data/imageMap";
 import { normalize } from "../utils/normalize";
 import discoverBanner from "../assets/discover.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import likeService from "../services/like.service";
+import favoriteService from "../services/favorite.service";
 import communityService from "../services/community.service";
 import CommunityCard from "../components/CommunityCard";
 
@@ -62,29 +64,41 @@ export default function DiscoverPage() {
   }, [communities]);
 
   const handleLike = async (postId) => {
-    try {
-      await api.post(`/likes/${postId}`);
+  if (!token) return alert("Please login");
 
-      setLikesMap((prev) => ({
-        ...prev,
-        [postId]: (prev[postId] || 0) + 1,
-      }));
-    } catch (err) {
-      console.error("Like failed", err);
-    }
-  };
-  const handleFavorite = async (postId) => {
-    try {
-      await api.post(`/favorites/${postId}`);
+  try {
+    const res = await likeService.toggleLike(postId, "CommunityPost", token);
+    
+    // Update UI
+    setLikesMap((prev) => ({
+      ...prev,
+      [postId]: res.liked
+        ? (prev[postId] || 0) + 1
+        : (prev[postId] || 1) - 1,
+    }));
+  } catch (err) {
+    console.error("Like failed", err);
+  }
+};
 
-      setFavoritesMap((prev) => ({
-        ...prev,
-        [postId]: !prev[postId],
-      }));
-    } catch (err) {
-      console.error("Favorite failed", err);
-    }
-  };
+const handleFavorite = async (postId) => {
+  if (!token) return alert("Please login");
+
+  try {
+    const res = await favoriteService.toggleFavorite(
+      postId,
+      "CommunityPost",
+      token
+    );
+
+    setFavoritesMap((prev) => ({
+      ...prev,
+      [postId]: res.isFavorite,
+    }));
+  } catch (err) {
+    console.error("Favorite failed", err);
+  }
+};
 
   const filteredCommunities = communities.filter((post) => {
     const keyword = search.toLowerCase();
@@ -128,7 +142,7 @@ export default function DiscoverPage() {
 
       {/* PROVINCE (ROUND IMAGE ONLY) */}
       <section className="px-6 py-6 bg-white">
-        <h2 className="text-xl font-semibold mb-4">Explore by Province</h2>
+        <h2 className="text-2xl font-bold mb-4">Explore by Province</h2>
 
         {loading ? (
           <p>Loading...</p>

@@ -1,3 +1,4 @@
+//frontend\src\pages\CommunityPostDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import communityService from "../services/community.service";

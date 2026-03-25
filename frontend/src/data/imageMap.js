@@ -7,6 +7,9 @@ import bmcImg from "../assets/bmc.png";
 import svImg from "../assets/sv.jpg";
 import pursatImg from "../assets/pursat.jpg";
 import mikiriImg from "../assets/mikiri.jpeg";
+import KampongThom from "../assets/KampongThom.png";
+import st from "../assets/st.png";
+import takeo from "../assets/takeo.jpg";
 
 export const provinceImages = {
   phnompenh: phnomPenhImg,
@@ -17,6 +20,9 @@ export const provinceImages = {
   sihanoukvile: svImg,
   pursat: pursatImg,
   mondulkiri: mikiriImg,
+  kampongthom: KampongThom,
+  stungtreng: st,
+  takeo: takeo,
 };
 export const categoryImages = {
   temple:

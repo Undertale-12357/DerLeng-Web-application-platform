@@ -33,7 +33,7 @@ export const createCommunityPost = async (req, res) => {
 export const getAllCommunityPosts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 8;
+    const limit = parseInt(req.query.limit) || 10;
 
     const result = await communityPostService.getAll(page, limit);
 

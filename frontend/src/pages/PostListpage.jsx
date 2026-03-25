@@ -1,7 +1,9 @@
+//frontend\src\pages\PostListpage.jsx
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import postService from "../services/post.service";
 import StoryCard from "../components/stories/StoryCard"; // <-- import StoryCard
+import favoritepostService from "../services/favoritepost.service";
 
 export default function PostListPage() {
   const { categoryId, provinceId } = useParams();
@@ -50,16 +52,20 @@ export default function PostListPage() {
     );
   };
 
-  const handleFavorite = (postId) => {
-    setPosts(prev =>
-      prev.map(p =>
-        p._id === postId ? { ...p, isFavorite: !p.isFavorite } : p
-      )
-    );
+  const handleFavorite = async (postId) => {
+  const res = await favoritepostService.toggleFavorite(postId);
+
+  setPosts(prev =>
+    prev.map(p =>
+      p._id === postId
+        ? { ...p, isFavorite: res.isFavorite }
+        : p
+    )
+  );
   };
 
   return (
-    <div className="p-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    <div className="p-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
       {posts.map(post => (
         <StoryCard
           key={post._id}

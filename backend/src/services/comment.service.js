@@ -34,7 +34,7 @@ const create = async ({ target_id, target_type, user_id, content }) => {
 // ✅ GET COMMENTS
 const getByTarget = async (target_id, target_type) => {
   return await Comment.find({ target_id, target_type })
-    .populate("user_id", "username")
+    .populate("user_id", "username avatar ")
     .sort({ created_at: -1 });
 };
 

@@ -1,7 +1,9 @@
+//frontend\src\pages\PostDetail.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import postService from "../services/post.service";
-import commentService from "../services/comment.service";
+import commentService from "../services/commentPost.service";
+
 import {
   Heart,
   ChevronLeft,
@@ -10,6 +12,8 @@ import {
   Send,
   Trash2,
   ArrowLeft,
+  MoreVertical,
+  Edit,
 } from "lucide-react";
 import PostLoginPromptModal from "../components/PostLoginPromptModal";
 
@@ -24,6 +28,9 @@ export default function PostDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
 
   const token = localStorage.getItem("token");
   const currentUser = token ? JSON.parse(atob(token.split(".")[1])) : null;
@@ -77,28 +84,43 @@ export default function PostDetail() {
     }
   };
 
-  const handleAddComment = async () => {
-    if (!token) {
-      setShowLoginModal(true);
-      return;
-    }
-    if (!newComment.trim()) return;
+    const handleDeleteComment = async (commentId) => {
     try {
-      const comment = await commentService.addComment(id, newComment, token);
-      setComments([comment, ...comments]);
-      setNewComment("");
+      await commentService.deleteComment(commentId);
+      setComments(comments.filter((c) => c._id !== commentId));
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleDeleteComment = async (commentId) => {
-    try {
-      await commentService.deleteComment(commentId, token);
-      setComments(comments.filter((c) => c._id !== commentId));
-    } catch (err) {
-      console.error(err);
-    }
+  const handleAddComment = async () => {
+  if (!token) return setShowLoginModal(true);
+  if (!newComment.trim()) return;
+
+  try {
+    const comment = await commentService.addComment(id, newComment);
+    setComments([comment, ...comments]);
+    setNewComment("");
+  } catch (err) {
+    console.error(err);
+  }
+  };
+  const handleEditComment = async (commentId) => {
+  try {
+    const updated = await commentService.updateComment(
+      commentId,
+      editText
+    );
+
+    setComments((prev) =>
+      prev.map((c) => (c._id === commentId ? updated : c))
+    );
+
+    setEditingId(null);
+    setOpenMenuId(null);
+  } catch (err) {
+    console.error(err);
+  }
   };
 
   if (loading)
@@ -336,15 +358,16 @@ export default function PostDetail() {
                   key={comment._id}
                   className="flex gap-4 p-4 rounded-2xl bg-white border border-gray-50 hover:border-gray-100 transition shadow-sm"
                 >
-                  <div className="w-10 h-10 bg-[#008A3D] text-white flex items-center justify-center rounded-full font-bold uppercase">
-                    {comment.user_id.username?.charAt(0)}
-                  </div>
+                  <img
+                    src={comment.user_id?.avatar || "/default-avatar.png"}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
                   <div className="flex-1">
-                    <div className="flex justify-between items-center mb-1">
+                    <div className="flex items-center gap-2 mb-1">
                       <h4 className="font-bold text-gray-800">
                         {comment.user_id.username}
                       </h4>
-                      <span className="text-[10px] text-gray-400 uppercase font-medium">
+                      <span className="text-[10px] text-gray-400">
                         {new Date(comment.created_at).toLocaleDateString()}
                       </span>
                     </div>
@@ -352,12 +375,25 @@ export default function PostDetail() {
                       {comment.content}
                     </p>
                     {currentUser && comment.user_id?._id === currentUser.id && (
-                      <button
-                        onClick={() => handleDeleteComment(comment._id)}
-                        className="mt-2 text-red-400 hover:text-red-600 text-xs flex items-center gap-1 transition"
-                      >
-                        <Trash2 size={12} /> Delete
-                      </button>
+                      <div className="relative">
+                        <button onClick={() => setOpenMenuId(comment._id)}>
+                          <MoreVertical size={16} />
+                        </button>
+
+                        {openMenuId === comment._id && (
+                          <div className="absolute right-0 bg-white shadow-md rounded-md p-2">
+                            <button className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100">
+                              <Edit size={14} /> Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeleteComment(comment._id)}
+                              className="flex items-center gap-2 px-2 py-1 text-red-500 hover:bg-gray-100"
+                            >
+                              <Trash2 size={14} /> Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

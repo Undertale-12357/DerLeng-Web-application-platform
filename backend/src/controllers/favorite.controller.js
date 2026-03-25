@@ -6,8 +6,9 @@ import {
 /* ---------------- TOGGLE ---------------- */
 export const toggleFavorite = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { target_id, target_type } = req.body;
+    console.log("toggleFavorite payload:", { userId, target_id, target_type });
 
     const result = await toggleFavoriteService(userId, target_id, target_type);
 
@@ -18,6 +19,7 @@ export const toggleFavorite = async (req, res) => {
       isFavorite: result.favorited,
     });
   } catch (error) {
+    console.error("toggleFavorite error:", error); 
     res.status(500).json({ message: error.message });
   }
 };
@@ -26,7 +28,7 @@ export const toggleFavorite = async (req, res) => {
 /* ---------------- GET FAVORITES ---------------- */
 export const getUserFavorites = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { target_type } = req.query; // optional filter
 
     const favorites = await getUserFavoritesService(

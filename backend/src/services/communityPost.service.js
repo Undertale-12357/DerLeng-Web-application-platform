@@ -20,7 +20,7 @@ const create = async ({
   });
 };
 
-const getAll = async (page = 1, limit = 8) => {
+const getAll = async (page = 1, limit = 10) => {
   const skip = (page - 1) * limit;
 
   const total = await CommunityPost.countDocuments();
