@@ -16,6 +16,7 @@ export default function Cart() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + (item.price || 0) * item.quantity,
@@ -39,13 +40,15 @@ export default function Cart() {
 
   const handleCheckout = async () => {
     const userId = user?.id || user?._id;
+    setError("");
     if (!userId) {
-      alert("User session not found. Please log in again.");
+      setError("User session not found. Please log in again.");
       return;
     }
 
     if (!address || !phone || !screenshot) {
-      alert("Please fill in all fields and upload your payment screenshot.");
+      setError("Please fill in all fields and upload your payment screenshot.");
+      setTimeout(() => setError(""), 4000);
       return;
     }
 
@@ -78,7 +81,10 @@ export default function Cart() {
       }
     } catch (error) {
       console.error("Order Error", error.response?.data)
-      alert(error.response?.data?.message || "Order failed");
+      setError(
+        error.response?.data?.message || "Order failed. Please try again.",
+      );
+      setTimeout(() => setError(""), 5000);
     } finally {
       setLoading(false);
     }
@@ -222,7 +228,16 @@ export default function Cart() {
             <span>Total:</span>
             <span className="text-green-600">${totalPrice}</span>
           </div>
-
+          
+          {/* Error Display Section */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded-r-lg animate-pulse">
+              <div className="flex items-center">
+                <span className="mr-2">⚠️</span>
+                {error}
+              </div>
+            </div>
+          )}
           <button
             onClick={handleCheckout}
             disabled={loading}

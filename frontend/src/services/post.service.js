@@ -1,5 +1,5 @@
 //frontend\src\services\post.service.js
-import api from "./api.js";
+import api from "./api";
 import axios from "axios";
 /* ---------------- GET POST ---------------- */
 export const getPostById = async (postId) => {

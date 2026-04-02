@@ -1,5 +1,5 @@
 // src/services/user.service.js
-import api from "./api.js";
+import api from "./api";
 
 const uploadProfileImage = async (formData, token) => {
   const res = await api.post("/users/upload-profile", formData, {

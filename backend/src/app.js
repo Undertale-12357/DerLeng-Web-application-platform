@@ -24,9 +24,11 @@ const app = express();
 // Middlewares
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://derleng-website-9648zasiv-haysansans-projects.vercel.app",
+  "https://derleng-website.vercel.app",
+  "https://derleng-website.onrender.com",
 ];
 
+app.options("*", cors());
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -48,6 +50,10 @@ app.use(express.urlencoded({ extended: true }));
 // Server Static files (for ckoudinary/local images)
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.get("/", (req, res) => {
+  res.send("DerLeng API is running ✅");
+});
 
 // Routes
 app.use("/api/auth", authRoutes);

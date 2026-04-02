@@ -1,4 +1,4 @@
-import api from "./api.js";
+import api from "./api";
 
 // Get all community posts
 const getAllCommunityPosts = async (page = 1, limit = 10) => {

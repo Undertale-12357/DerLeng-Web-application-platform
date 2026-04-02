@@ -16,12 +16,14 @@ import Tabs from "../components/profile/Tabs.jsx";
 import TabContent from "../components/profile/TabContent.jsx";
 import EditPostModal from "../components/EditPostModal";
 import { deletePost } from "../services/post.service";
+import { getMyOrders } from "../services/order.service.js";
+import { socket } from "../utils/socket.js";
 export default function Profile() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, setUser, logout } = useContext(AuthContext);
   const [showEditModal, setShowEditModal] = useState(false);
-const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
   const defaultUser = {
     username: "N/A",
     email: "N/A",
@@ -73,6 +75,8 @@ const [selectedPost, setSelectedPost] = useState(null);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [loadingBookings, setLoadingBookings] = useState(true);
   const [loadingFavorites, setLoadingFavorites] = useState(true);
+  const [userOrders, setUserOrders] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
 
   const [selectedBooking, setSelectedBooking] = useState(null);
 
@@ -109,6 +113,20 @@ const [selectedPost, setSelectedPost] = useState(null);
       console.error(err);
     } finally {
       setLoadingPosts(false);
+    }
+  };
+
+  const fetchUserOrders = async () => {
+    if (!user || !user.id) return;
+    setLoadingOrders(true);
+    try {
+      const response = await getMyOrders(user.id);
+      const orders = response.data?.data || response.data || [];
+      setUserOrders(orders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoadingOrders(false);
     }
   };
 
@@ -175,6 +193,7 @@ const [selectedPost, setSelectedPost] = useState(null);
       fetchUserPosts();
       fetchUserBookings();
       fetchUserFavorites();
+      fetchUserOrders();
     }
   }, [user]);
 
@@ -194,6 +213,16 @@ const [selectedPost, setSelectedPost] = useState(null);
       }))
     );
   }, [userFavorites]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    socket.on("orderUpdate", (data) => {
+      fetchUserOrders();
+    });
+
+    return () => socket.off("orderUpdate");
+  }, [user?.id]);
 
   // ---------------- LIKE ----------------
   const toggleLikePost = async (postId, type = "Post") => {
@@ -315,6 +344,8 @@ const [selectedPost, setSelectedPost] = useState(null);
             loadingPosts={loadingPosts}
             loadingFavorites={loadingFavorites}
             userBookings={userBookings}
+            userOrders={userOrders}
+            loadingOrders={loadingOrders}
             navigateToDetail={navigateToDetail}
             navigateToCommunityDetail={navigateToCommunityDetail} 
             handleLike={toggleLikePost}

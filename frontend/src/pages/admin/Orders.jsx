@@ -88,9 +88,7 @@ export default function Orders() {
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <h1 className="text-3xl font-bold text-[#002B11]">
-          Order Management
-        </h1>
+        <h1 className="text-3xl font-bold text-[#002B11]">Order Management</h1>
         {/* Search Bar */}
         <div className="relative w-full md:w-96">
           <Search
@@ -115,8 +113,8 @@ export default function Orders() {
             {activeTab === "active" ? (
               <>
                 <option value="pending">Pending</option>
-                <option value="approved">Processing</option>
-                <option value="rejected">Shipped</option>
+                <option value="processing">Processing</option>
+                <option value="shipped">Shipped</option>
               </>
             ) : (
               <>
@@ -221,8 +219,8 @@ export default function Orders() {
                       className="p-1 text-sm border rounded bg-white"
                     >
                       <option value="pending">Pending</option>
-                      <option value="approved">Proccessing</option>
-                      <option value="rejected">Shipped</option>
+                      <option value="processing">Proccessing</option>
+                      <option value="shipped">Shipped</option>
                       <option value="delivered">Delivered</option>
                       <option value="cancelled">Cancelled</option>
                     </select>

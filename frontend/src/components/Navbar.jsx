@@ -17,6 +17,8 @@ export default function Navbar() {
   const { user } = useContext(AuthContext);
   const { cartItems } = useContext(CartContext);
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
