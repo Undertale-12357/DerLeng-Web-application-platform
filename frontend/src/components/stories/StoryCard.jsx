@@ -3,6 +3,7 @@ import { Heart, MoreVertical, Star } from "lucide-react";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
+
 const StoryCard = ({
   post,
   onLike,

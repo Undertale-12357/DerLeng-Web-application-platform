@@ -1,19 +1,15 @@
 // src/pages/Post.jsx
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { DayPicker } from 'react-day-picker';
-import 'react-day-picker/dist/style.css'; // default styles
-import {
-  Calendar,
-  Clock,
-  DollarSign,
-  PenLine,
-} from "lucide-react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css"; // default styles
+import { Calendar, Clock, DollarSign, PenLine } from "lucide-react";
 import api from "../services/api.js";
 import { getCategories, getProvinces } from "../services/place.service";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import ButtonSpinner from "../components/ButtonSpinner.jsx";
+
 
 export default function PostForm() {
   const { user: currentUser } = useContext(AuthContext);
@@ -129,26 +125,15 @@ export default function PostForm() {
   const handlePublish = async () => {
     const newErrors = {};
 
-    [
-      "title",
-      "content",
-      "province",
-      "type",
-      "startDate",
-      "duration",
-      "cost",
-    ].forEach((field) => {
-      if (!post[field])
+    ["title", "content", "province", "type"].forEach((field) => {
+      if (!post[field]) {
         newErrors[field] = `${getFieldLabel(field)} is required`;
+      }
     });
-
-    if (post.gallery.length === 0) {
-      newErrors.gallery = "Please add at least one image";
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      toast.error("Please complete all required fields");
+      toast.error("Please complete required fields");
       return;
     }
 
@@ -156,21 +141,33 @@ export default function PostForm() {
 
     try {
       const formData = new FormData();
+
       formData.append("title", post.title);
       formData.append("content", post.content);
-      formData.append("trip_date", new Date(post.startDate).toISOString());
-      formData.append("trip_duration", post.duration);
-      formData.append("trip_cost", post.cost);
       formData.append("province_id", post.province);
       formData.append("category_id", post.type);
       formData.append("user_id", currentUser._id);
+
+      if (post.startDate) {
+        formData.append("trip_date", new Date(post.startDate).toISOString());
+      }
+
+      if (post.duration) {
+        formData.append("trip_duration", post.duration);
+      }
+
+      if (post.cost) {
+        formData.append("trip_cost", post.cost);
+      }
 
       if (post.locations[0]) {
         formData.append("location_description", post.locations[0].description);
         formData.append("location_link", post.locations[0].link || "");
       }
 
-      post.gallery.forEach((file) => formData.append("images", file));
+      post.gallery.forEach((file) => {
+        formData.append("images", file);
+      });
 
       await api.post("/posts", formData);
 
@@ -187,6 +184,7 @@ export default function PostForm() {
         gallery: [],
         locations: [],
       });
+
       setErrors({});
       setTimeout(() => navigate("/TravelStories"), 1000);
     } catch (err) {
@@ -264,7 +262,7 @@ export default function PostForm() {
                       name="startDate"
                       value={post.startDate}
                       onChange={handleChange}
-                      className={`block w-full border p-1 text-gray-600 rounded-sm ${
+                      className={`block w-full border p-1 text-gray-600 rounded-sm   ${
                         errors.startDate
                           ? "border-red-500 focus:ring-red-300"
                           : "border-gray-300 focus:ring-green-500"
@@ -279,7 +277,7 @@ export default function PostForm() {
                   >
                     {errors.startDate
                       ? errors.startDate
-                      : "Add start date to your trip"}
+                      : "Add start date to your trip (optional)"}
                   </p>
                 </div>
 
@@ -305,7 +303,7 @@ export default function PostForm() {
                       errors.duration ? "text-red-500" : "text-gray-400"
                     }`}
                   >
-                    {errors.duration ? errors.duration : "Duration of the trip"}
+                    {errors.duration ? errors.duration : "Duration of the trip (optional)"}
                   </p>
                 </div>
 
@@ -332,7 +330,7 @@ export default function PostForm() {
                       errors.cost ? "text-red-500" : "text-gray-400"
                     }`}
                   >
-                    {errors.cost ? errors.cost : "How much you spent"}
+                    {errors.cost ? errors.cost : "How much you spent (optional)"}
                   </p>
                 </div>
               </div>
@@ -527,9 +525,7 @@ export default function PostForm() {
               onClick={handlePublish}
               disabled={isSubmitting}
             >
-              {isSubmitting && (
-                <ButtonSpinner size={1.25} color="white" />
-              )}
+              {isSubmitting && <ButtonSpinner size={1.25} color="white" />}
               {isSubmitting ? "Publishing..." : "Publish Post"}
             </button>
           </div>

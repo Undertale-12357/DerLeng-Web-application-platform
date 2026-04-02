@@ -5,13 +5,14 @@ import Footer from "../components/Footer";
 
 const Master = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar />      
-      <main style={{ flex: '1 0 auto' }} className="main">
+    <div
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
+      <Navbar />
+      <main style={{ flex: "1 0 auto" }} className="main pt-16">
         <Outlet />
       </main>
       <Footer></Footer>
-     
     </div>
   );
 };

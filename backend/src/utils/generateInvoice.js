@@ -5,9 +5,6 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Detect Khmer characters
-const isKhmer = (text) => /[\u1780-\u17FF]/.test(text || "");
-
 export const generateInvoice = (booking) => {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ margin: 50 });
@@ -19,18 +16,13 @@ export const generateInvoice = (booking) => {
 
     // Paths
     const logoPath = path.join(__dirname, "public", "logo.png");
-    const khmerFont = path.join(
-      __dirname,
-      "public",
-      "fonts",
-      "NotoSansKhmer-Regular.ttf",
-    );
 
-    // Register font
-    doc.registerFont("khmer", khmerFont);
-
-    // Logo
-    doc.image(logoPath, 50, 40, { width: 100 });
+    // Logo (safe)
+    try {
+      doc.image(logoPath, 50, 40, { width: 100 });
+    } catch (e) {
+      console.log("Logo not found, skipping...");
+    }
 
     // Header
     doc
@@ -58,31 +50,22 @@ export const generateInvoice = (booking) => {
     const startX = 50;
     const labelWidth = 140;
 
-    // Dynamic row function
+    // Safe row function
     const row = (label, value, yPos) => {
       const valueText = value || "N/A";
 
-      // Label
       doc
         .font("Helvetica")
         .fontSize(12)
         .fillColor("black")
         .text(label, startX, yPos, { width: labelWidth });
 
-      // Calculate height
-      const textHeight = doc
-        .font(isKhmer(valueText) ? "khmer" : "Helvetica")
-        .heightOfString(valueText, {
-          width: 350,
-        });
-
-      // Value
-      doc.text(valueText, startX + labelWidth, yPos, {
+      doc.font("Helvetica").text(valueText, startX + labelWidth, yPos, {
         width: 350,
         lineGap: 2,
       });
 
-      return Math.max(textHeight, 20) + 5;
+      return 25;
     };
 
     let y = doc.y;
@@ -113,27 +96,18 @@ export const generateInvoice = (booking) => {
       .stroke();
 
     y = tableTop + 25;
-    let total = 0;
 
-    // Services (dynamic height)
+    const total = Number(booking.total_price) || 0;
+
+    // Services
     booking.services?.forEach((s, i) => {
       doc.font("Helvetica").fontSize(11);
 
       doc.text(i + 1, 50, y);
-
-      const textHeight = doc
-        .font(isKhmer(s.name) ? "khmer" : "Helvetica")
-        .heightOfString(s.name, {
-          width: 300,
-        });
-
       doc.text(s.name, 100, y, { width: 300 });
+      doc.text(`$${s.price}`, 450, y, { align: "right" });
 
-      doc.font("Helvetica").text(`$${s.price}`, 450, y, { align: "right" });
-
-      total += s.price;
-
-      y += Math.max(textHeight, 20) + 5;
+      y += 25;
     });
 
     // Line
@@ -158,22 +132,18 @@ export const generateInvoice = (booking) => {
         .fillColor("#0f3d2e")
         .text("Trip Details:", 50, y);
 
-      const noteHeight = doc
-        .font(isKhmer(booking.admin_note) ? "khmer" : "Helvetica")
-        .heightOfString(booking.admin_note, {
-          width: 450,
-        });
+      y += 20;
 
       doc
-        .font(isKhmer(booking.admin_note) ? "khmer" : "Helvetica")
+        .font("Helvetica")
         .fontSize(11)
         .fillColor("black")
-        .text(booking.admin_note, 50, y + 20, {
+        .text(booking.admin_note, 50, y, {
           width: 450,
           lineGap: 2,
         });
 
-      y += noteHeight + 40;
+      y += 60;
     }
 
     // Footer

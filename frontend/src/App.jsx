@@ -27,6 +27,7 @@ import PostPageWrapper from "./components/PostPageWrapper.jsx";
 import DetailPageWrapper from "./components/DetailPageWrapper.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Orders from "./pages/admin/Orders.jsx";
+import PostByProvince from "./pages/PostByProvince.jsx"; 
 
 
 const App = () => {
@@ -35,11 +36,9 @@ const App = () => {
 
   return (
     <Routes>
-      
       {/* Main Layout */}
-      
+
       <Route path="/" element={<Master />}>
-        
         <Route index element={<Home />} />
 
         {/* Shop */}
@@ -57,10 +56,10 @@ const App = () => {
         <Route path="post" element={<PostPageWrapper />} />
         <Route path="posts/:id" element={<DetailPageWrapper />} />
         <Route path="posts/category/:categoryId" element={<PostListPage />} />
-        <Route path="posts/province/:provinceId" element={<PostListPage />} />
+        {/* <Route path="posts/province/:provinceId" element={<PostListPage />} /> */}
 
         {/* Profile */}
-        
+
         <Route
           path="profile"
           element={
@@ -76,6 +75,7 @@ const App = () => {
           path="community/province/:provinceId"
           element={<CommunityByProvince />}
         />
+        <Route path="posts/province/:provinceId" element={<PostByProvince />} />
         <Route path="booking/:id" element={<BookingPage />} />
 
         {/* Other Pages */}

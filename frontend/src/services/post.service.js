@@ -64,8 +64,8 @@ const getPostsByCategory = async (categoryId, page = 1, limit = 10) => {
 };
 
 const getPostsByProvince = async (provinceId, page = 1, limit = 10) => {
-  const res = api.get(
-    `/posts/province/${provinceId}?page=${page}&limit=${limit}`
+  const res = await api.get(
+    `/posts/province/${provinceId}?page=${page}&limit=${limit}`,
   );
   return res.data;
 };

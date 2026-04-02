@@ -11,6 +11,8 @@ import { CartContext } from "../context/CartContext";
 export default function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   const { user } = useContext(AuthContext);
   const { cartItems } = useContext(CartContext);
@@ -41,7 +43,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="w-full bg-white shadow-sm">
+      <header className="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
@@ -117,7 +119,11 @@ export default function Navbar() {
                 className="p-1 rounded-full hover:bg-gray-100 transition relative"
               >
                 <Bell className="w-6 h-6 text-[#002B11]" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+
+                {/* Only show red dot if notifications exist */}
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                )}
               </button>
 
               <button
@@ -150,7 +156,6 @@ export default function Navbar() {
 
           {/* Menu */}
           <div className="fixed top-0 right-0 h-full w-72 bg-white/90 backdrop-blur-xl shadow-2xl z-50 p-6 flex flex-col transform transition-transform duration-300 translate-x-0">
-
             {/* Close */}
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold text-[#002B11]">Menu</h2>
@@ -164,7 +169,6 @@ export default function Navbar() {
 
             {/* Links */}
             <nav className="flex flex-col gap-2 text-[#002B11]">
-
               <Link
                 to="/discover"
                 onClick={() => setMobileMenuOpen(false)}
@@ -204,27 +208,23 @@ export default function Navbar() {
               >
                 About
               </Link>
-
             </nav>
 
             {/* Bottom section (optional) */}
             <div className="mt-auto pt-6 border-t border-green-100 text-sm text-gray-400">
               © 2026 DERLENG
             </div>
-
           </div>
         </>
       )}
 
-      <AuthModals
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-      />
-
+      <AuthModals isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
       <NotificationPanel
         isOpen={showNotifications}
         onClose={() => setShowNotifications(false)}
         user={user}
+        notifications={notifications}
+        setNotifications={setNotifications}
       />
     </>
   );
