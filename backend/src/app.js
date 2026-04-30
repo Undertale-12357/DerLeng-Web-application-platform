@@ -21,6 +21,10 @@ import notificationRoutes from "./routes/notification.routes.js";
 
 const app = express();
 
+//API documentation
+const swaggerDocument = YAML.load("./docs/api/swagger.yaml");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Middlewares
 const allowedOrigins = [
   "http://localhost:5173",
