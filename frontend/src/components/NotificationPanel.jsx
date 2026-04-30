@@ -1,14 +1,30 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { getUserNotifications } from "../services/notification.service";
+<<<<<<< HEAD
+import BookingModal from "./profile/BookingModal";
+=======
 import { getMyOrders } from "../services/order.service";
+>>>>>>> ca94ed874f71f20008a08cfa2766aae2261990eb
 
 const socket = io(import.meta.env.VITE_API_URL || "http://localhost:5000");
 
+<<<<<<< HEAD
+export default function NotificationPanel({
+  isOpen,
+  onClose,
+  user,
+  notifications,
+  setNotifications,
+}) {
+  // const [notifications, setNotifications] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+=======
 export default function NotificationPanel({ isOpen, onClose, user }) {
   const [notifications, setNotifications] = useState([]);
   const [orderTracking, setOrderTracking] = useState([]);
   const [activeTab, setActiveTab] = useState("Community");
+>>>>>>> ca94ed874f71f20008a08cfa2766aae2261990eb
   console.log("USER FULL:", user);
 
   // Load from backend using axios instance
@@ -87,6 +103,18 @@ export default function NotificationPanel({ isOpen, onClose, user }) {
       socket.off("notification");
     };
   }, [user]);
+  const handleOpenBooking = (notification) => {
+    const booking = notification.booking_id;
+
+    if (!booking) {
+      console.warn("No booking found in notification");
+      return;
+    }
+
+    console.log("OPEN BOOKING:", booking); // debug
+
+    setSelectedBooking(booking);
+  };
 
   const handleConfirmReceived = (orderId) => {
     setOrderTracking((prev) => prev.filter((o) => o.orderId !== orderId));
@@ -169,7 +197,8 @@ export default function NotificationPanel({ isOpen, onClose, user }) {
           notifications.map((item) => (
             <div
               key={item._id}
-              className="p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+              onClick={() => handleOpenBooking(item)}
+              className="p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition cursor-pointer"
             >
               <p className="font-semibold text-[#002B11]">{item.title}</p>
 
@@ -184,6 +213,10 @@ export default function NotificationPanel({ isOpen, onClose, user }) {
           ))
         )}
       </div>
+      <BookingModal
+        selectedBooking={selectedBooking}
+        setSelectedBooking={setSelectedBooking}
+      />
     </div>
   );
 }

@@ -267,7 +267,7 @@ export default function BookingPage() {
               )}
 
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number
+                Phone Number <span className="text-red-500">*</span>
               </label>
               <input
                 name="phone_number"
@@ -343,7 +343,7 @@ export default function BookingPage() {
               )}
 
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Trip Duration (days)
+                Trip Duration (days) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -362,7 +362,7 @@ export default function BookingPage() {
             {/* SERVICES */}
             <div>
               <h3 className="font-semibold text-gray-700 border-b pb-2 mb-4">
-                Services & Preferences
+                Services & Preferences <span className="text-red-500">*</span>
               </h3>
 
               <div className="space-y-3">
@@ -423,7 +423,7 @@ export default function BookingPage() {
             {/* FILE UPLOAD */}
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Upload Transaction
+                Upload Transaction <span className="text-red-500">*</span>
               </label>
 
               {/* INPUT */}

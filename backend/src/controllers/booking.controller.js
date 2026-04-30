@@ -157,7 +157,7 @@ export const updateBookingStatus = async (req, res) => {
   try {
     const { status, admin_note } = req.body;
 
-    // 1️⃣ Update booking
+
     const booking = await updateBookingStatusService(req.params.id, status);
 
     // Save admin note (IMPORTANT)
@@ -166,13 +166,17 @@ export const updateBookingStatus = async (req, res) => {
 
     // ONLY when approved
     if (status === "approved") {
-      // 2️⃣ Generate PDF (IN MEMORY)
+  
       const pdfBuffer = await generateInvoice(booking);
 
-      // 3️⃣ Send EMAIL
-      await sendEmailWithInvoice(booking.user_id.email, pdfBuffer);
 
-      // 4️⃣ Save notification (DB)
+      try {
+        await sendEmailWithInvoice(booking.user_id.email, pdfBuffer);
+      } catch (err) {
+        console.error("Email failed:", err);
+      }
+
+ 
       const notification = await Notification.create({
         user_id: booking.user_id._id,
         booking_id: booking._id,
@@ -180,7 +184,7 @@ export const updateBookingStatus = async (req, res) => {
         message: `Your booking has been approved.\n\n${admin_note || ""}`,
       });
 
-      // 5️⃣ Send real-time notification
+  
       sendNotification(booking.user_id._id.toString(), notification);
     }
     if (status === "completed") {

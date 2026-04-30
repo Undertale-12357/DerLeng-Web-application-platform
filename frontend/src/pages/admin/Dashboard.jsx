@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   /* ---------------- FORMAT DATA ---------------- */
   const formatData = (data) => {
-    if (!Array.isArray(data)) return []; // ✅ prevent crash
+    if (!Array.isArray(data)) return []; 
 
     return data.map((item) => ({
       month: `${item._id?.month}/${item._id?.year}`,
@@ -33,7 +33,7 @@ export default function Dashboard() {
     const grouped = {};
 
     users.forEach((user) => {
-      const date = new Date(user.created_at); // ✅ IMPORTANT
+      const date = new Date(user.created_at); 
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
 
@@ -58,7 +58,7 @@ export default function Dashboard() {
       try {
         setLoading(true);
 
-        // ✅ SAFE DEFAULTS
+      
         let usersRes = { data: { data: [] } };
         let postsRes = { data: { data: [] } };
         let proRes = { data: { data: [] } };
@@ -98,7 +98,7 @@ export default function Dashboard() {
         /* -------- BOOKING STATS -------- */
         try {
           const stats = await getBookingStats();
-          bookingStats = stats || []; // ✅ already returns array
+          bookingStats = stats || []; 
           const revenueSum = bookingStats.reduce((sum, item) => {
             // if your backend already excludes rejected → keep as is
             return sum + (item.totalRevenue || 0);
@@ -115,13 +115,13 @@ export default function Dashboard() {
         setProductCount(proRes.data?.data?.length || 0);
         setCommunityCount(commRes.data?.data?.length || 0);
 
-        // setChartData(formatData(bookingStats)); 
-        setChartData([
-          { month: "1/2026", bookings: 1, revenue: 10 },
-          { month: "2/2026", bookings: 3, revenue: 20 },
-          { month: "3/2026", bookings: 2, revenue: 30 },
-          { month: "4/2026", bookings: 5, revenue: 50 },
-        ]);  // mock test
+        setChartData(formatData(bookingStats)); 
+        // setChartData([
+        //   { month: "1/2026", bookings: 1, revenue: 10 },
+        //   { month: "2/2026", bookings: 3, revenue: 20 },
+        //   { month: "3/2026", bookings: 2, revenue: 30 },
+        //   { month: "4/2026", bookings: 5, revenue: 50 },
+        // ]);  // mock test
       } catch (err) {
         console.error("MAIN DASHBOARD ERROR:", err);
         setError("Failed to load dashboard data");
@@ -187,10 +187,9 @@ export default function Dashboard() {
             dark
             accent="rose"
           />
-          <StatCard title="Total Revenue" value="1200" dark />
+          <StatCard title="Total Revenue" value="$120" dark />
         </div>
 
-        {/* 📈 CHART */}
         <div className="mb-5">
           <BookingChart data={chartData} />
         </div>

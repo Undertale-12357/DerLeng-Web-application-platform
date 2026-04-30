@@ -7,6 +7,9 @@ import bmcImg from "../assets/bmc.png";
 import svImg from "../assets/sv.jpg";
 import pursatImg from "../assets/pursat.jpg";
 import mikiriImg from "../assets/mikiri.jpeg";
+import KampongThom from "../assets/KampongThom.png";
+import st from "../assets/st.png";
+import takeo from "../assets/takeo.jpg";
 
 export const provinceImages = {
   phnompenh: phnomPenhImg,
@@ -17,6 +20,9 @@ export const provinceImages = {
   sihanoukvile: svImg,
   pursat: pursatImg,
   mondulkiri: mikiriImg,
+  kampongthom: KampongThom,
+  stungtreng: st,
+  takeo: takeo,
 };
 export const categoryImages = {
   temple:
@@ -29,6 +35,5 @@ export const categoryImages = {
     "https://i.pinimg.com/1200x/f8/01/ff/f801ff926dcf0268de3a5acdd66c56a8.jpg",
   mountain:
     "https://i.pinimg.com/736x/ff/6d/a9/ff6da94e1d64544b15fa958d4e17be1c.jpg",
-  sea:
-    "https://i.pinimg.com/1200x/a6/ed/89/a6ed89f24aa52f332a1f10337fb1cb07.jpg",
+  sea: "https://i.pinimg.com/1200x/a6/ed/89/a6ed89f24aa52f332a1f10337fb1cb07.jpg",
 };

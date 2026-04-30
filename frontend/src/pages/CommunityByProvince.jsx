@@ -1,58 +1,12 @@
-// //frontend\src\pages\CommunityByProvince.jsx
-// import { useParams, useNavigate } from "react-router-dom";
-// import { useEffect, useState } from "react";
-// import communityService from "../services/community.service";
-// import CommunityCard from "../components/CommunityCard";
 
-// export default function CommunityByProvince() {
-//   const { provinceId } = useParams();
-//   const navigate = useNavigate();
-
-//   const [communities, setCommunities] = useState([]);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const data = await communityService.getAllCommunityPosts();
-
-//         // filter by province
-//         const filtered = data.filter((c) => c.province_id?._id === provinceId);
-
-//         setCommunities(filtered);
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     };
-
-//     fetchData();
-//   }, [provinceId]);
-
-//   return (
-//     <div className="p-6">
-//       <h1 className="text-2xl font-bold mb-6">Communities</h1>
-
-//       {communities.length === 0 ? (
-//         <p>No communities found</p>
-//       ) : (
-//         <div className="grid md:grid-cols-3 gap-6">
-//           {communities.map((post) => (
-//             <CommunityCard
-//               key={post._id}
-//               post={post}
-//               onClick={() => navigate(`/community/${post._id}`)}
-//             />
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import communityService from "../services/community.service";
 import CommunityCard from "../components/CommunityCard";
 import useCommunityInteractions from "../hooks/useCommunityInteraction.js";
+import { getProvinces } from "../services/place.service";
+import { ArrowLeft } from "lucide-react";
 
 export default function CommunityByProvince() {
   const { provinceId } = useParams();
@@ -63,6 +17,7 @@ export default function CommunityByProvince() {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const limit = 10;
+  const [provinceName, setProvinceName] = useState("");
 
   // 2. FETCH DATA
   useEffect(() => {
@@ -84,6 +39,23 @@ export default function CommunityByProvince() {
 
     fetchData();
   }, [provinceId, page]);
+  useEffect(() => {
+    const fetchProvinceName = async () => {
+      try {
+        const res = await getProvinces();
+
+        const found = res.find((p) => String(p._id) === String(provinceId));
+
+        if (found) {
+          setProvinceName(found.province_name);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchProvinceName();
+  }, [provinceId]);
 
   // 3. HOOK AFTER DATA EXISTS
   const {
@@ -116,7 +88,18 @@ export default function CommunityByProvince() {
   const pages = getPagination(page, pagination?.pages || 1);
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Communities</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-full hover:bg-gray-100 transition"
+        >
+          <ArrowLeft size={22} />
+        </button>
+
+        <h1 className="text-2xl font-bold">
+          Communities in {provinceName || "Province"}
+        </h1>
+      </div>
 
       {communities.length === 0 ? (
         <p>No communities found</p>
@@ -161,46 +144,44 @@ export default function CommunityByProvince() {
               Next
             </button>
           </div> */}
-            <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center justify-center gap-2 mt-6">
+            {/* Prev */}
+            <button
+              disabled={page === 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="px-3 py-1 rounded bg-gray-200 disabled:opacity-40"
+            >
+              Prev
+            </button>
 
-  {/* Prev */}
-  <button
-    disabled={page === 1}
-    onClick={() => setPage((p) => p - 1)}
-    className="px-3 py-1 rounded bg-gray-200 disabled:opacity-40"
-  >
-    Prev
-  </button>
+            {/* Pages */}
+            {pages.map((p, idx) =>
+              p === "..." ? (
+                <span key={idx} className="px-2 text-gray-400">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={idx}
+                  onClick={() => setPage(p)}
+                  className={`px-3 py-1 rounded ${
+                    page === p ? "bg-green-500 text-white" : "bg-gray-100"
+                  }`}
+                >
+                  {p}
+                </button>
+              ),
+            )}
 
-  {/* Pages */}
-  {pages.map((p, idx) =>
-    p === "..." ? (
-      <span key={idx} className="px-2 text-gray-400">
-        ...
-      </span>
-    ) : (
-      <button
-        key={idx}
-        onClick={() => setPage(p)}
-        className={`px-3 py-1 rounded ${
-          page === p ? "bg-green-500 text-white" : "bg-gray-100"
-        }`}
-      >
-        {p}
-      </button>
-    )
-  )}
-
-  {/* Next */}
-  <button
-    disabled={page >= (pagination?.pages || 1)}
-    onClick={() => setPage((p) => p + 1)}
-    className="px-3 py-1 rounded bg-gray-200 disabled:opacity-40"
-  >
-    Next
-  </button>
-
-</div>
+            {/* Next */}
+            <button
+              disabled={page >= (pagination?.pages || 1)}
+              onClick={() => setPage((p) => p + 1)}
+              className="px-3 py-1 rounded bg-gray-200 disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
         </>
       )}
     </div>

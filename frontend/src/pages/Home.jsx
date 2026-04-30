@@ -72,10 +72,10 @@ export default function Home() {
       <InterestPanel3 />
 
       {/* Title 4 - Under Banner 3 */}
-      <Title4 />
+      {/* <Title4 /> */}
 
       {/* Interest Panel */}
-      <InterestPanel4 />
+      {/* <InterestPanel4 /> */}
 
       {/* Sub header - Under Banner 4 */}
       <SubHeader />

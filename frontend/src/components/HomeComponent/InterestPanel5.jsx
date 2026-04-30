@@ -59,7 +59,7 @@ export default function InterestPanel5() {
   };
 
   const handleCardClick = (title) => {
-    navigate(`/discover?category=${encodeURIComponent(title)}`);
+    navigate(`/TravelStories`);
   };
 
   return (
