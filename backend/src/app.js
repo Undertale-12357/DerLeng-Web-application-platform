@@ -22,7 +22,7 @@ import notificationRoutes from "./routes/notification.routes.js";
 const app = express();
 
 //API documentation
-const swaggerDocument = YAML.load("./docs/api/swagger.yaml");
+const swaggerDocument = YAML.load(path.join(__dirname, "../docs/api/swagger.yaml"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middlewares
