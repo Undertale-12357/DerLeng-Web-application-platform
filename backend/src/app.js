@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import YAML from "yamljs";
+import swaggerUi from "swagger-ui-express";
+import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.routes.js";
 import postRoutes from "./routes/post.routes.js";
@@ -22,9 +25,14 @@ import notificationRoutes from "./routes/notification.routes.js";
 const app = express();
 
 //API documentation
-const swaggerDocument = YAML.load(path.join(__dirname, "../docs/api/swagger.yaml"));
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(__filename);
 
+const swaggerDocument = YAML.load(
+  path.join(_dirname, "../docs/api/swagger.yaml"),
+);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Middlewares
 const allowedOrigins = [
   "http://localhost:5173",
