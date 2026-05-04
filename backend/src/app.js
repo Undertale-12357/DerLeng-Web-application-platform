@@ -29,7 +29,7 @@ const __filename = fileURLToPath(import.meta.url);
 const _dirname = path.dirname(__filename);
 
 const swaggerDocument = YAML.load(
-  path.join(_dirname, "../docs/api/swagger.yaml"),
+  path.join(_dirname, "../../docs/api/swagger.yaml"),
 );
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
