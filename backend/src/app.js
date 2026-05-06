@@ -36,7 +36,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Middlewares
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://derleng-website-9648zasiv-haysansans-projects.vercel.app",
+  "https://derleng-website.vercel.app/",
+  "https://derleng-website.onrender.com",
 ];
 
 app.use(
