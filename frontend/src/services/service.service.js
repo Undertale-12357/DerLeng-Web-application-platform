@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api.js";
 
 // Get services of a community
 const getByCommunity = async (communityId) => {

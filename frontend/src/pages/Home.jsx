@@ -35,9 +35,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Find Things To Do Title - Under Banner */}
-      <Title />
-      
       {/* Display Banner */}
       <div className="w-full px-6 bg-white flex justify-center">
         <div className="w-full max-w-7xl">
@@ -45,6 +42,8 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Find Things To Do Title - Under Banner */}
+      <Title />
 
       {/* Interest Panel */}
       <InterestPanel />
